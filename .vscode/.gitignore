@@ -1,0 +1,12 @@
+# C++
+*.exe
+*.out
+
+# Java
+*.class
+
+# VS Code
+.vscode/
+
+# OS files
+.DS_Store
