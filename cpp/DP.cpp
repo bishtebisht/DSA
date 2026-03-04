@@ -1,25 +1,70 @@
-#include<bits/stdc++.h>
+// #include<bits/stdc++.h>
+// using namespace std;
+
+// int fibonacci(int n) {
+//     // Base cases
+//     if (n <= 1)
+//         return n;
+
+//     // Create dp array
+//     int dp[n + 1];
+
+//     dp[0] = 0;  // 0th Fibonacci
+//     dp[1] = 1;  // 1st Fibonacci
+
+//     // Build the solution bottom-up
+//     for (int i = 2; i <= n; i++) {
+//         dp[i] = dp[i - 1] + dp[i - 2];
+//     }
+
+//     return dp[n];
+// }
+
+// int main() {
+//     cout << fibonacci(6);
+// }
+
+#include <iostream>
+#include <vector>
 using namespace std;
 
-int fibonacci(int n) {
-    // Base cases
-    if (n <= 1)
-        return n;
+int numSpecial(vector<vector<int>>& mat) {
+    int m = mat.size();       // number of rows
+    int n = mat[0].size();    // number of columns
 
-    // Create dp array
-    int dp[n + 1];
+    vector<int> rowCount(m, 0);
+    vector<int> colCount(n, 0);
 
-    dp[0] = 0;  // 0th Fibonacci
-    dp[1] = 1;  // 1st Fibonacci
-
-    // Build the solution bottom-up
-    for (int i = 2; i <= n; i++) {
-        dp[i] = dp[i - 1] + dp[i - 2];
+    // Step 1: Count 1s in each row and column
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            if (mat[i][j] == 1) {
+                rowCount[i]++;
+                colCount[j]++;
+            }
+        }
     }
 
-    return dp[n];
+    int specialCount = 0;
+
+    // Step 2: Check special positions
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            if (mat[i][j] == 1 && rowCount[i] == 1 && colCount[j] == 1) {
+                specialCount++;
+            }
+        }
+    }
+
+    return specialCount;
 }
 
 int main() {
-    cout << fibonacci(6);
+    vector<vector<int>> mat = {
+        {1,0,0},
+        {0,0,1},
+        {1,0,0}
+    };
+
+    cout << numSpecial(mat);
 }
