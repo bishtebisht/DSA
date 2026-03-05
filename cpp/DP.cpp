@@ -1,5 +1,5 @@
-// #include<bits/stdc++.h>
-// using namespace std;
+#include<bits/stdc++.h>
+using namespace std;
 
 // int fibonacci(int n) {
 //     // Base cases
@@ -24,47 +24,82 @@
 //     cout << fibonacci(6);
 // }
 
-#include <iostream>
-#include <vector>
-using namespace std;
 
-int numSpecial(vector<vector<int>>& mat) {
-    int m = mat.size();       // number of rows
-    int n = mat[0].size();    // number of columns
+// int numSpecial(vector<vector<int>>& mat) {
+//     int m = mat.size();       // number of rows
+//     int n = mat[0].size();    // number of columns
 
-    vector<int> rowCount(m, 0);
-    vector<int> colCount(n, 0);
+//     vector<int> rowCount(m, 0);
+//     vector<int> colCount(n, 0);
 
-    // Step 1: Count 1s in each row and column
-    for (int i = 0; i < m; i++) {
-        for (int j = 0; j < n; j++) {
-            if (mat[i][j] == 1) {
-                rowCount[i]++;
-                colCount[j]++;
-            }
-        }
+//     // Step 1: Count 1s in each row and column
+//     for (int i = 0; i < m; i++) {
+//         for (int j = 0; j < n; j++) {
+//             if (mat[i][j] == 1) {
+//                 rowCount[i]++;
+//                 colCount[j]++;
+//             }
+//         }
+//     }
+
+//     int specialCount = 0;
+
+//     // Step 2: Check special positions
+//     for (int i = 0; i < m; i++) {
+//         for (int j = 0; j < n; j++) {
+//             if (mat[i][j] == 1 && rowCount[i] == 1 && colCount[j] == 1) {
+//                 specialCount++;
+//             }
+//         }
+//     }
+
+//     return specialCount;
+// }
+
+// int main() {
+//     vector<vector<int>> mat = {
+//         {1,0,0},
+//         {0,0,1},
+//         {1,0,0}
+//     };
+
+//     cout << numSpecial(mat);
+// }
+
+
+int minOperations(string s) {
+    int n = s.size();
+
+    int startWith0 = 0; // mismatches if pattern starts with '0'
+    int startWith1 = 0; // mismatches if pattern starts with '1'
+
+    for (int i = 0; i < n; i++) {
+
+        // Expected characters for alternating patterns
+        char expected0 = (i % 2 == 0) ? '0' : '1'; // pattern: 010101...
+        char expected1 = (i % 2 == 0) ? '1' : '0'; // pattern: 101010...
+
+        // Count mismatches
+        if (s[i] != expected0)
+            startWith0++;
+
+        if (s[i] != expected1)
+            startWith1++;
     }
 
-    int specialCount = 0;
-
-    // Step 2: Check special positions
-    for (int i = 0; i < m; i++) {
-        for (int j = 0; j < n; j++) {
-            if (mat[i][j] == 1 && rowCount[i] == 1 && colCount[j] == 1) {
-                specialCount++;
-            }
-        }
-    }
-
-    return specialCount;
+    // Return minimum operations required
+    return min(startWith0, startWith1);
 }
 
 int main() {
-    vector<vector<int>> mat = {
-        {1,0,0},
-        {0,0,1},
-        {1,0,0}
-    };
+    string s;
 
-    cout << numSpecial(mat);
+    cout << "Enter binary string: ";
+    cin >> s;
+
+    int result = minOperations(s);
+
+    cout << "Minimum operations needed: " << result << endl;
+
+    return 0;
 }
