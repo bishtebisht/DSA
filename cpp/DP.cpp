@@ -67,39 +67,68 @@ using namespace std;
 // }
 
 
-int minOperations(string s) {
-    int n = s.size();
+// int minOperations(string s) {
+//     int n = s.size();
 
-    int startWith0 = 0; // mismatches if pattern starts with '0'
-    int startWith1 = 0; // mismatches if pattern starts with '1'
+//     int startWith0 = 0; // mismatches if pattern starts with '0'
+//     int startWith1 = 0; // mismatches if pattern starts with '1'
 
-    for (int i = 0; i < n; i++) {
+//     for (int i = 0; i < n; i++) {
 
-        // Expected characters for alternating patterns
-        char expected0 = (i % 2 == 0) ? '0' : '1'; // pattern: 010101...
-        char expected1 = (i % 2 == 0) ? '1' : '0'; // pattern: 101010...
+//         // Expected characters for alternating patterns
+//         char expected0 = (i % 2 == 0) ? '0' : '1'; // pattern: 010101...
+//         char expected1 = (i % 2 == 0) ? '1' : '0'; // pattern: 101010...
 
-        // Count mismatches
-        if (s[i] != expected0)
-            startWith0++;
+//         // Count mismatches
+//         if (s[i] != expected0)
+//             startWith0++;
 
-        if (s[i] != expected1)
-            startWith1++;
+//         if (s[i] != expected1)
+//             startWith1++;
+//     }
+
+//     // Return minimum operations required
+//     return min(startWith0, startWith1);
+// }
+
+// int main() {
+//     string s;
+
+//     cout << "Enter binary string: ";
+//     cin >> s;
+
+//     int result = minOperations(s);
+
+//     cout << "Minimum operations needed: " << result << endl;
+
+//     return 0;
+// }
+
+
+bool checkOnesSegment(string s) {
+    bool seenZero = false;
+
+    for (char c : s) {
+        if (c == '0') {
+            seenZero = true;
+        }
+        // If we see '1' after a '0', it means a new segment started
+        else if (seenZero && c == '1') {
+            return false;
+        }
     }
 
-    // Return minimum operations required
-    return min(startWith0, startWith1);
+    return true;
 }
 
 int main() {
     string s;
-
-    cout << "Enter binary string: ";
     cin >> s;
 
-    int result = minOperations(s);
-
-    cout << "Minimum operations needed: " << result << endl;
+    if (checkOnesSegment(s))
+        cout << "true";
+    else
+        cout << "false";
 
     return 0;
 }
