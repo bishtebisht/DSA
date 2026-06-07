@@ -53,14 +53,14 @@ using namespace std;
 //         }
 //     }
 
-//     return specialCount;
+//     return specialCount; //3
 // }
 
 // int main() {
 //     vector<vector<int>> mat = {
 //         {1,0,0},
 //         {0,0,1},
-//         {1,0,0}
+//         {0,1,0}
 //     };
 
 //     cout << numSpecial(mat);
@@ -105,30 +105,106 @@ using namespace std;
 // }
 
 
-bool checkOnesSegment(string s) {
-    bool seenZero = false;
+// bool checkOnesSegment(string s) {
+//     bool seenZero = false;
 
-    for (char c : s) {
-        if (c == '0') {
-            seenZero = true;
+//     for (char c : s) {
+//         if (c == '0') {
+//             seenZero = true;
+//         }
+//         // If we see '1' after a '0', it means a new segment started
+//         else if (seenZero && c == '1') {
+//             return false;
+//         }
+//     }
+
+//     return true;
+// }
+
+// int main() {
+//     string s;
+//     cin >> s;
+
+//     if (checkOnesSegment(s))
+//         cout << "true";
+//     else
+//         cout << "false";
+
+//     return 0;
+// }
+
+
+//without dp
+// int ninjaTraining(int n, vector<vector<int>> &points)
+// {
+//     int pre1=points[0][0],  pre2=points[0][1],  pre3=points[0][2];
+//     int cur1,  cur2,  cur3;
+//     for(int i=1; i<n; i++){
+//        cur1=points[i][0]+max(pre2,pre3);
+//        cur2=points[i][1]+max(pre3,pre1);
+//        cur3=points[i][2]+max(pre1,pre2);
+//        cout<<cur1<<" "<<cur2<<" "<<cur3<<endl;
+//        pre1=cur1;
+//        pre2=cur2;
+//         pre3=cur3;
+//     }
+//     return max(pre1,max(pre2,pre3));
+// }
+// int main() {
+//     int n;
+//     cin >> n;
+//     vector<vector<int>> points(n, vector<int>(3));
+//     for (int i = 0; i < n; i++) {
+//         for (int j = 0; j < 3; j++) {
+//             cin >> points[i][j];
+//         }
+//     }
+
+//     cout << ninjaTraining(n, points) << endl;
+
+//     return 0;
+// }
+
+//with dp
+int f(int day, int last, vector<vector<int>> &points, vector<vector<int>> &dp){
+    if(day==0){
+        int maxi=0;
+        for(int task=0; task<3; task++){
+            if(task!=last){
+                maxi=max(maxi, points[0][task]);
+            }
         }
-        // If we see '1' after a '0', it means a new segment started
-        else if (seenZero && c == '1') {
-            return false;
+        return maxi;
+    }
+    if(dp[day][last]!=-1) return dp[day][last];
+    int maxi=0;
+    for(int task=0; task<3; task++){
+        if(task!=last){
+            int point=points[day][task]+f(day-1, task, points, dp);
+            maxi=max(maxi, point);
         }
     }
 
-    return true;
+    return dp[day][last]=maxi;
+}
+int ninjaTraining(int n, vector<vector<int>> &points)
+{
+    vector<vector<int>> dp(n, vector<int>(4, -1));
+    return f(n-1, 3, points, dp);
 }
 
 int main() {
-    string s;
-    cin >> s;
+    int n;
+    cin >> n;
+    vector<vector<int>> points(n, vector<int>(3));
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < 3; j++) {
+            cin >> points[i][j];
+        }
+    }
 
-    if (checkOnesSegment(s))
-        cout << "true";
-    else
-        cout << "false";
+
+    cout << ninjaTraining(n, points) << endl;
 
     return 0;
 }
